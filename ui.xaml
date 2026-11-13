@@ -1,0 +1,1239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="核桃便签"
+        Width="800" Height="600" MinWidth="440" MinHeight="540"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        ResizeMode="CanResize" WindowStartupLocation="Manual"
+        FontFamily="Microsoft YaHei UI, Segoe UI"
+        TextOptions.TextFormattingMode="Display"
+        UseLayoutRounding="True" SnapsToDevicePixels="True"
+        ShowInTaskbar="True">
+  <Window.Resources>
+    <!-- ============ 可主题化画刷（运行时由 Set-Theme 替换） ============ -->
+    <LinearGradientBrush x:Key="BgSolidBrush" StartPoint="0,0" EndPoint="0.85,1">
+      <GradientStop Color="#FF0C241A" Offset="0"/>
+      <GradientStop Color="#FF0A1F17" Offset="0.55"/>
+      <GradientStop Color="#FF071A11" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="BgGlassBrush" StartPoint="0,0" EndPoint="0.85,1">
+      <GradientStop Color="#FF0E2A1E" Offset="0"/>
+      <GradientStop Color="#FF0A2117" Offset="0.55"/>
+      <GradientStop Color="#FF071A11" Offset="1"/>
+    </LinearGradientBrush>
+    <RadialGradientBrush x:Key="GlowTopBrush">
+      <GradientStop Color="#3DA8F0A0" Offset="0"/>
+      <GradientStop Color="#00A8F0A0" Offset="0.7"/>
+    </RadialGradientBrush>
+    <RadialGradientBrush x:Key="GlowBottomBrush">
+      <GradientStop Color="#3335D07F" Offset="0"/>
+      <GradientStop Color="#0035D07F" Offset="0.75"/>
+    </RadialGradientBrush>
+    <LinearGradientBrush x:Key="SheenBrush" StartPoint="0,0" EndPoint="0,1">
+      <GradientStop Color="#1CFFFFFF" Offset="0"/>
+      <GradientStop Color="#08FFFFFF" Offset="0.14"/>
+      <GradientStop Color="#00FFFFFF" Offset="0.42"/>
+      <GradientStop Color="#0A000000" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="ProgressBrush" StartPoint="0,0" EndPoint="1,0">
+      <GradientStop Color="#FF35D07F" Offset="0"/>
+      <GradientStop Color="#FFC9F9C8" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="AddButtonBrush" StartPoint="0,0" EndPoint="1,1">
+      <GradientStop Color="#FFD3FBC9" Offset="0"/>
+      <GradientStop Color="#FF3ED98A" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="CheckedBrush" StartPoint="0,0" EndPoint="1,1">
+      <GradientStop Color="#FFD3FBC9" Offset="0"/>
+      <GradientStop Color="#FF47DB8E" Offset="1"/>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#FFF4FBF7"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#FFB8D6C6"/>
+    <SolidColorBrush x:Key="TextMutedBrush" Color="#FF95B9A6"/>
+    <SolidColorBrush x:Key="AccentBrush" Color="#FF7BE495"/>
+    <SolidColorBrush x:Key="AccentSoftBrush" Color="#FFC9F9C8"/>
+    <SolidColorBrush x:Key="AccentDeepBrush" Color="#FF35D07F"/>
+    <SolidColorBrush x:Key="AccentTextBrush" Color="#FFA5EDB9"/>
+    <SolidColorBrush x:Key="SelectionBrush" Color="#667BE495"/>
+    <SolidColorBrush x:Key="CardBgBrush" Color="#16FFFFFF"/>
+    <SolidColorBrush x:Key="CardHoverBgBrush" Color="#22FFFFFF"/>
+    <SolidColorBrush x:Key="CardBorderBrush" Color="#2BFFFFFF"/>
+    <SolidColorBrush x:Key="CardHoverBorderBrush" Color="#33FFFFFF"/>
+    <SolidColorBrush x:Key="IconFgBrush" Color="#C2E4D3"/>
+    <SolidColorBrush x:Key="IconHoverBgBrush" Color="#1FFFFFFF"/>
+    <SolidColorBrush x:Key="IconPressedBgBrush" Color="#30FFFFFF"/>
+    <SolidColorBrush x:Key="ToggleCheckedBgBrush" Color="#2935D07F"/>
+    <SolidColorBrush x:Key="ToggleCheckedHoverBgBrush" Color="#3D35D07F"/>
+    <SolidColorBrush x:Key="CheckBoxBgBrush" Color="#12FFFFFF"/>
+    <SolidColorBrush x:Key="CheckBoxBorderBrush" Color="#4DFFFFFF"/>
+    <SolidColorBrush x:Key="CheckGlyphFgBrush" Color="#FF062312"/>
+    <SolidColorBrush x:Key="ComposerBgBrush" Color="#12FFFFFF"/>
+    <SolidColorBrush x:Key="ComposerBorderBrush" Color="#1FFFFFFF"/>
+    <SolidColorBrush x:Key="PillBgBrush" Color="#14FFFFFF"/>
+    <SolidColorBrush x:Key="PillBorderBrush" Color="#1FFFFFFF"/>
+    <SolidColorBrush x:Key="SettingsBgBrush" Color="#FF0A2118"/>
+    <SolidColorBrush x:Key="TrackBgBrush" Color="#26FFFFFF"/>
+    <!-- 开关轨道 / 滚动条滑块的「关闭态」底色。
+         深色主题叠白，浅色主题（便签黄/白/粉）必须叠黑，否则白底 + 白钮等于隐形。
+         这四把画刷由 Set-Theme 按当前主题重算。 -->
+    <SolidColorBrush x:Key="SwitchTrackOffBrush" Color="#2EFFFFFF"/>
+    <SolidColorBrush x:Key="SwitchTrackHoverBrush" Color="#55FFFFFF"/>
+    <SolidColorBrush x:Key="SwitchTrackDragBrush" Color="#77FFFFFF"/>
+    <SolidColorBrush x:Key="SwitchKnobBorderBrush" Color="#00000000"/>
+    <SolidColorBrush x:Key="DangerFgBrush" Color="#FFFF9C9C"/>
+    <SolidColorBrush x:Key="DangerHoverBgBrush" Color="#26FF6B6B"/>
+    <SolidColorBrush x:Key="DangerPressedBgBrush" Color="#40FF6B6B"/>
+
+    <!-- 弹出菜单皮肤：四个画刷由 Set-Theme 按当前主题重算，菜单才会跟着主题换色 -->
+    <SolidColorBrush x:Key="MenuBgBrush" Color="#FF122C20"/>
+    <SolidColorBrush x:Key="MenuBorderBrush" Color="#33FFFFFF"/>
+    <SolidColorBrush x:Key="MenuHoverBgBrush" Color="#FF1B3A2A"/>
+    <SolidColorBrush x:Key="MenuSeparatorBrush" Color="#FF2A4736"/>
+
+    <!-- ============ 样式 ============ -->
+    <!-- 弹出菜单：跟随主题（默认的白色系统菜单在深色主题里很突兀） -->
+    <Style x:Key="AppMenuStyle" TargetType="{x:Type ContextMenu}">
+      <Setter Property="Background" Value="{DynamicResource MenuBgBrush}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource MenuBorderBrush}"/>
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+      <Setter Property="FontFamily" Value="Microsoft YaHei UI, Segoe UI"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Padding" Value="5"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type ContextMenu}">
+            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+              <Border.Effect>
+                <DropShadowEffect BlurRadius="20" ShadowDepth="5" Opacity="0.38" Direction="270" Color="#FF000000"/>
+              </Border.Effect>
+              <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle"/>
+            </Border>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="AppMenuItemStyle" TargetType="{x:Type MenuItem}">
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+      <Setter Property="FontFamily" Value="Microsoft YaHei UI, Segoe UI"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Padding" Value="10,6"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type MenuItem}">
+            <Border x:Name="Bd" Background="Transparent" CornerRadius="7" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+              <ContentPresenter ContentSource="Header" RecognizesAccessKey="False" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsHighlighted" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource MenuHoverBgBrush}"/>
+              </Trigger>
+              <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="AppMenuSeparatorStyle" TargetType="{x:Type Separator}">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Separator}">
+            <Border Height="1" Margin="7,4" Background="{DynamicResource MenuSeparatorBrush}"/>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="IconButtonStyle" TargetType="{x:Type Button}">
+      <Setter Property="Width" Value="28"/>
+      <Setter Property="Height" Value="28"/>
+      <Setter Property="Background" Value="#0DFFFFFF"/>
+      <Setter Property="Foreground" Value="{DynamicResource IconFgBrush}"/>
+      <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Focusable" Value="False"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Button}">
+            <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="14">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource IconHoverBgBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+              </Trigger>
+              <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource IconPressedBgBrush}"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="CloseButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource IconButtonStyle}">
+      <Style.Triggers>
+        <Trigger Property="IsMouseOver" Value="True">
+          <Setter Property="Foreground" Value="{DynamicResource DangerFgBrush}"/>
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+
+    <Style x:Key="ChromeToggleStyle" TargetType="{x:Type ToggleButton}">
+      <Setter Property="Width" Value="28"/>
+      <Setter Property="Height" Value="28"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Foreground" Value="{DynamicResource IconFgBrush}"/>
+      <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Focusable" Value="False"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type ToggleButton}">
+            <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="14">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource IconHoverBgBrush}"/>
+              </Trigger>
+              <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ToggleCheckedBgBrush}"/>
+              </Trigger>
+              <MultiTrigger>
+                <MultiTrigger.Conditions>
+                  <Condition Property="IsChecked" Value="True"/>
+                  <Condition Property="IsMouseOver" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ToggleCheckedHoverBgBrush}"/>
+              </MultiTrigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+      <Style.Triggers>
+        <Trigger Property="IsMouseOver" Value="True">
+          <!-- 不能写死白色：便签黄/白/粉三个浅色主题下，白图标落在浅底上就消失了 -->
+          <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+        </Trigger>
+        <Trigger Property="IsChecked" Value="True">
+          <Setter Property="Foreground" Value="{DynamicResource AccentTextBrush}"/>
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+
+    <Style x:Key="PinToggleStyle" TargetType="{x:Type ToggleButton}">
+      <Setter Property="Width" Value="22"/>
+      <Setter Property="Height" Value="22"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}"/>
+      <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+      <Setter Property="FontSize" Value="10"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Focusable" Value="False"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type ToggleButton}">
+            <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="11">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource IconHoverBgBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+              </Trigger>
+              <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource AccentTextBrush}"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="ThemeCardStyle" TargetType="{x:Type Button}">
+      <Setter Property="Width" Value="88"/>
+      <Setter Property="Height" Value="54"/>
+      <Setter Property="Margin" Value="3"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderBrush" Value="#22FFFFFF"/>
+      <Setter Property="BorderThickness" Value="1.5"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Focusable" Value="False"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Button}">
+            <Border x:Name="Bd" CornerRadius="10" Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+              <ContentPresenter/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="AddButtonStyle" TargetType="{x:Type Button}">
+      <Setter Property="Width" Value="36"/>
+      <Setter Property="Height" Value="36"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Focusable" Value="False"/>
+      <Setter Property="Foreground" Value="{DynamicResource CheckGlyphFgBrush}"/>
+      <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+      <Setter Property="FontSize" Value="14"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Button}">
+            <Border x:Name="Bd" CornerRadius="18" Background="{DynamicResource AddButtonBrush}">
+              <Border.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="2" Direction="270" Opacity="0.4" Color="#FF0B5C34"/>
+              </Border.Effect>
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Bd" Property="Opacity" Value="0.92"/>
+              </Trigger>
+              <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="Bd" Property="Opacity" Value="0.7"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="TypeButtonStyle" TargetType="{x:Type Button}">
+      <Setter Property="Height" Value="30"/>
+      <Setter Property="Padding" Value="12,0"/>
+      <Setter Property="Background" Value="{DynamicResource PillBgBrush}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource PillBorderBrush}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Focusable" Value="False"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Button}">
+            <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="15">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Margin="{TemplateBinding Padding}"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource IconHoverBgBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="SmallButtonStyle" TargetType="{x:Type Button}">
+      <Setter Property="Height" Value="28"/>
+      <Setter Property="Padding" Value="10,0"/>
+      <Setter Property="Background" Value="{DynamicResource PillBgBrush}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource PillBorderBrush}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Focusable" Value="False"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Button}">
+            <Border x:Name="Bd" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Margin="{TemplateBinding Padding}"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource IconHoverBgBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="DangerButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource SmallButtonStyle}">
+      <Setter Property="Foreground" Value="{DynamicResource DangerFgBrush}"/>
+      <Style.Triggers>
+        <Trigger Property="IsMouseOver" Value="True">
+          <Setter Property="Background" Value="{DynamicResource DangerHoverBgBrush}"/>
+          <Setter Property="BorderBrush" Value="#40FF6B6B"/>
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+
+    <Style x:Key="TabStyle" TargetType="{x:Type ToggleButton}">
+      <Setter Property="Height" Value="30"/>
+      <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Focusable" Value="False"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type ToggleButton}">
+            <Grid Background="Transparent">
+              <ContentPresenter Margin="10,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+              <Border x:Name="Underline" Height="2" Width="16" CornerRadius="1"
+                      Background="{DynamicResource AccentBrush}" VerticalAlignment="Bottom"
+                      HorizontalAlignment="Center" Visibility="Collapsed"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+              </Trigger>
+              <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+                <Setter TargetName="Underline" Property="Visibility" Value="Visible"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="SwitchStyle" TargetType="{x:Type ToggleButton}">
+      <Setter Property="Width" Value="40"/>
+      <Setter Property="Height" Value="22"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Focusable" Value="False"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type ToggleButton}">
+            <Grid>
+              <Border x:Name="Track" CornerRadius="11" Background="{DynamicResource SwitchTrackOffBrush}"/>
+              <Ellipse x:Name="Knob" Width="16" Height="16" Fill="#FFFFFFFF"
+                       Stroke="{DynamicResource SwitchKnobBorderBrush}" StrokeThickness="1"
+                       HorizontalAlignment="Left" Margin="3,0,0,0"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="Track" Property="Background" Value="{DynamicResource AccentDeepBrush}"/>
+                <Setter TargetName="Knob" Property="HorizontalAlignment" Value="Right"/>
+                <Setter TargetName="Knob" Property="Margin" Value="0,0,3,0"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="SliderStyle" TargetType="{x:Type Slider}">
+      <Setter Property="Height" Value="24"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Slider}">
+            <Grid Height="24">
+              <Border Height="4" CornerRadius="2" Background="{DynamicResource TrackBgBrush}" VerticalAlignment="Center"/>
+              <Track x:Name="PART_Track" VerticalAlignment="Center"
+                     Minimum="{Binding Minimum, RelativeSource={RelativeSource TemplatedParent}}"
+                     Maximum="{Binding Maximum, RelativeSource={RelativeSource TemplatedParent}}"
+                     Value="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                     ViewportSize="{Binding ViewportSize, RelativeSource={RelativeSource TemplatedParent}}"
+                     IsDirectionReversed="False">
+                <Track.DecreaseRepeatButton>
+                  <RepeatButton Command="Slider.DecreaseLarge" Opacity="0" Focusable="False"/>
+                </Track.DecreaseRepeatButton>
+                <Track.Thumb>
+                  <Thumb Width="14" Height="14">
+                    <Thumb.Template>
+                      <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Ellipse Fill="{DynamicResource AccentBrush}" Stroke="#40FFFFFF" StrokeThickness="1"/>
+                      </ControlTemplate>
+                    </Thumb.Template>
+                  </Thumb>
+                </Track.Thumb>
+                <Track.IncreaseRepeatButton>
+                  <RepeatButton Command="Slider.IncreaseLarge" Opacity="0" Focusable="False"/>
+                </Track.IncreaseRepeatButton>
+              </Track>
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="NoteCardStyle" TargetType="{x:Type Border}">
+      <Setter Property="Background" Value="{DynamicResource CardBgBrush}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource CardBorderBrush}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="CornerRadius" Value="13"/>
+      <Setter Property="Padding" Value="6,8,4,8"/>
+      <Setter Property="Margin" Value="0,0,0,8"/>
+      <Style.Triggers>
+        <Trigger Property="IsMouseOver" Value="True">
+          <Setter Property="Background" Value="{DynamicResource CardHoverBgBrush}"/>
+          <Setter Property="BorderBrush" Value="{DynamicResource CardHoverBorderBrush}"/>
+        </Trigger>
+      </Style.Triggers>
+    </Style>
+
+    <Style x:Key="NoteCheckStyle" TargetType="{x:Type CheckBox}">
+      <Setter Property="Width" Value="22"/>
+      <Setter Property="Height" Value="22"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Focusable" Value="False"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type CheckBox}">
+            <Grid Background="Transparent">
+              <Border x:Name="Box" Width="19" Height="19" CornerRadius="7"
+                      Background="{DynamicResource CheckBoxBgBrush}"
+                      BorderBrush="{DynamicResource CheckBoxBorderBrush}" BorderThickness="1.4"
+                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+              <TextBlock x:Name="Glyph" Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="10"
+                         Foreground="{DynamicResource CheckGlyphFgBrush}" Visibility="Collapsed"
+                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                <Setter TargetName="Box" Property="Background" Value="{DynamicResource IconHoverBgBrush}"/>
+              </Trigger>
+              <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                <Setter TargetName="Glyph" Property="Visibility" Value="Visible"/>
+                <Setter TargetName="Box" Property="Background" Value="{DynamicResource CheckedBrush}"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="NoteTextStyle" TargetType="{x:Type TextBox}">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+      <Setter Property="FontSize" Value="13.5"/>
+      <Setter Property="CaretBrush" Value="{DynamicResource AccentBrush}"/>
+      <Setter Property="SelectionBrush" Value="{DynamicResource SelectionBrush}"/>
+      <Setter Property="TextWrapping" Value="Wrap"/>
+      <Setter Property="AcceptsReturn" Value="False"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type TextBox}">
+            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" Background="Transparent"
+                          VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"/>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="ComposerInputStyle" TargetType="{x:Type TextBox}">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+      <Setter Property="FontSize" Value="13.5"/>
+      <Setter Property="CaretBrush" Value="{DynamicResource AccentBrush}"/>
+      <Setter Property="SelectionBrush" Value="{DynamicResource SelectionBrush}"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="MaxLength" Value="500"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type TextBox}">
+            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" Background="Transparent"
+                          VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden"/>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="SearchInputStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource ComposerInputStyle}">
+      <Setter Property="FontSize" Value="12.5"/>
+    </Style>
+
+    <Style x:Key="NoteDeleteStyle" TargetType="{x:Type Button}">
+      <Setter Property="Width" Value="22"/>
+      <Setter Property="Height" Value="22"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}"/>
+      <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+      <Setter Property="FontSize" Value="9"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Focusable" Value="False"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Button}">
+            <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="11">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource DangerHoverBgBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource DangerFgBrush}"/>
+              </Trigger>
+              <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource DangerPressedBgBrush}"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="SectionLabelStyle" TargetType="{x:Type TextBlock}">
+      <Setter Property="FontSize" Value="10.5"/>
+      <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}"/>
+      <Setter Property="Opacity" Value="0.9"/>
+      <Setter Property="Margin" Value="3,2,0,8"/>
+    </Style>
+
+    <Style x:Key="SettingsSectionStyle" TargetType="{x:Type TextBlock}">
+      <Setter Property="FontSize" Value="10.5"/>
+      <Setter Property="Foreground" Value="{DynamicResource AccentTextBrush}"/>
+      <Setter Property="Margin" Value="0,16,0,8"/>
+    </Style>
+
+    <Style TargetType="{x:Type ScrollBar}">
+      <Setter Property="OverridesDefaultStyle" Value="True"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Width" Value="8"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type ScrollBar}">
+            <Grid Background="Transparent">
+              <Track x:Name="PART_Track" IsDirectionReversed="True">
+                <Track.DecreaseRepeatButton>
+                  <RepeatButton Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="False"/>
+                </Track.DecreaseRepeatButton>
+                <Track.Thumb>
+                  <Thumb MinHeight="24">
+                    <Thumb.Template>
+                      <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Border x:Name="ThumbBd" Background="{DynamicResource SwitchTrackOffBrush}" CornerRadius="3" Margin="1,2"/>
+                        <ControlTemplate.Triggers>
+                          <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ThumbBd" Property="Background" Value="{DynamicResource SwitchTrackHoverBrush}"/>
+                          </Trigger>
+                          <Trigger Property="IsDragging" Value="True">
+                            <Setter TargetName="ThumbBd" Property="Background" Value="{DynamicResource SwitchTrackDragBrush}"/>
+                          </Trigger>
+                        </ControlTemplate.Triggers>
+                      </ControlTemplate>
+                    </Thumb.Template>
+                  </Thumb>
+                </Track.Thumb>
+                <Track.IncreaseRepeatButton>
+                  <RepeatButton Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="False"/>
+                </Track.IncreaseRepeatButton>
+              </Track>
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </Window.Resources>
+
+  <Grid x:Name="RootGrid" Margin="26">
+    <Border x:Name="GlassCard" CornerRadius="22" BorderThickness="1" BorderBrush="{DynamicResource CardBorderBrush}">
+      <Border.Effect>
+        <DropShadowEffect BlurRadius="24" ShadowDepth="8" Direction="270" Opacity="0.45" Color="#FF000000"/>
+      </Border.Effect>
+      <Grid>
+        <Border x:Name="SolidBg" CornerRadius="22" Background="{DynamicResource BgSolidBrush}"/>
+        <Border x:Name="GlassBg" CornerRadius="22" Background="{DynamicResource BgGlassBrush}" Opacity="0"/>
+        <Grid x:Name="GlowLayer" IsHitTestVisible="False">
+          <Ellipse Width="300" Height="300" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-150,-80,0"
+                   Fill="{DynamicResource GlowTopBrush}"/>
+          <Ellipse Width="290" Height="290" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-120,0,0,-140"
+                   Fill="{DynamicResource GlowBottomBrush}"/>
+        </Grid>
+        <Border x:Name="SheenLayer" CornerRadius="22" IsHitTestVisible="False" Background="{DynamicResource SheenBrush}"/>
+        <Border x:Name="NoiseLayer" CornerRadius="22" IsHitTestVisible="False" Opacity="0.5"/>
+
+        <Grid x:Name="MainGrid">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+
+          <!-- ============ 专注模式：顶部拖动条 ============ -->
+          <Border x:Name="FocusDragBar" Grid.Row="0" Height="22" Visibility="Collapsed" Background="Transparent"
+                  Cursor="SizeAll" ToolTip="拖动移动窗口"
+                  AutomationProperties.Name="拖动窗口" AutomationProperties.AutomationId="FocusDragBar">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+              <Ellipse Width="4" Height="4" Margin="2,0" Fill="{DynamicResource TextMutedBrush}"/>
+              <Ellipse Width="4" Height="4" Margin="2,0" Fill="{DynamicResource TextMutedBrush}"/>
+              <Ellipse Width="4" Height="4" Margin="2,0" Fill="{DynamicResource TextMutedBrush}"/>
+            </StackPanel>
+          </Border>
+
+          <!-- ============ 头部 ============ -->
+          <Grid x:Name="HeaderGrid" Grid.Row="0" Margin="22,16,18,0" Background="Transparent">
+            <StackPanel>
+              <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="ClockText" Text="00:00" FontFamily="Segoe UI Light" FontSize="46"
+                           Foreground="{DynamicResource TextPrimaryBrush}" Typography.NumeralAlignment="Tabular"
+                           VerticalAlignment="Bottom" AutomationProperties.AutomationId="ClockText"/>
+                <TextBlock x:Name="SecondsText" Text=":00" FontFamily="Segoe UI Light" FontSize="23"
+                           Foreground="{DynamicResource TextSecondaryBrush}" Typography.NumeralAlignment="Tabular"
+                           Margin="2,0,0,7" VerticalAlignment="Bottom"/>
+                <TextBlock x:Name="AmPmText" Text="" FontFamily="Segoe UI Light" FontSize="12"
+                           Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Bottom"
+                           Margin="3,0,0,9"/>
+              </StackPanel>
+              <StackPanel Orientation="Horizontal" Margin="1,4,0,0">
+                <TextBlock x:Name="DateText" Text="—" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}"
+                           AutomationProperties.AutomationId="DateText"/>
+                <TextBlock Text="·" FontSize="11.5" Margin="7,0" Foreground="{DynamicResource TextMutedBrush}"/>
+                <TextBlock x:Name="GreetingText" Text="你好" FontSize="11.5" Foreground="{DynamicResource AccentTextBrush}"/>
+              </StackPanel>
+              <!-- 本周日历（周一至周日，今天高亮；内容由代码生成） -->
+              <Border x:Name="WeekStrip" Margin="0,11,0,0" CornerRadius="11" Padding="7,6,7,5"
+                      Background="{DynamicResource PillBgBrush}" BorderThickness="1"
+                      BorderBrush="{DynamicResource PillBorderBrush}"
+                      AutomationProperties.Name="本周日历" AutomationProperties.AutomationId="WeekStrip">
+                <Grid x:Name="WeekStripHost"/>
+              </Border>
+              <Border x:Name="StatusPill" Margin="0,12,0,0" Background="{DynamicResource PillBgBrush}"
+                      BorderBrush="{DynamicResource PillBorderBrush}" BorderThickness="1" CornerRadius="10" Padding="11,7">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Ellipse Width="6" Height="6" Fill="{DynamicResource AccentDeepBrush}" VerticalAlignment="Center" Margin="0,0,7,0"/>
+                    <TextBlock x:Name="ProgressText" Text="今天要做什么？" FontSize="11"
+                               Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center"
+                               AutomationProperties.AutomationId="ProgressText"/>
+                  </StackPanel>
+                  <Border x:Name="ProgressTrack" Grid.Column="1" Width="84" Height="4" CornerRadius="2"
+                          Background="{DynamicResource TrackBgBrush}" VerticalAlignment="Center">
+                    <Border x:Name="ProgressFill" Width="0" Height="4" CornerRadius="2" HorizontalAlignment="Left"
+                            Background="{DynamicResource ProgressBrush}"/>
+                  </Border>
+                </Grid>
+              </Border>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-3,-2,0">
+              <ToggleButton x:Name="PinToggle" Style="{StaticResource ChromeToggleStyle}" Content="&#xE718;"
+                            ToolTip="窗口置顶" AutomationProperties.Name="窗口置顶" AutomationProperties.AutomationId="PinToggle"/>
+              <ToggleButton x:Name="GlassToggle" Style="{StaticResource ChromeToggleStyle}" Content="&#xE81E;"
+                            ToolTip="半透明玻璃" Margin="4,0,0,0"
+                            AutomationProperties.Name="半透明玻璃" AutomationProperties.AutomationId="GlassToggle"/>
+              <Border Width="1" Height="14" Background="{DynamicResource TrackBgBrush}" Margin="6,0" VerticalAlignment="Center"/>
+              <ToggleButton x:Name="LockToggle" Style="{StaticResource ChromeToggleStyle}" Content="&#xE72E;"
+                            ToolTip="锁定页面（禁止拖动与编辑）" Margin="1,0,0,0"
+                            AutomationProperties.Name="页面锁定" AutomationProperties.AutomationId="LockToggle"/>
+              <ToggleButton x:Name="FocusToggle" Style="{StaticResource ChromeToggleStyle}" Content="&#xE740;"
+                            ToolTip="专注模式（小窗）" Margin="4,0,0,0"
+                            AutomationProperties.Name="专注模式" AutomationProperties.AutomationId="FocusToggle"/>
+              <Button x:Name="SettingsButton" Style="{StaticResource IconButtonStyle}" Content="&#xE713;"
+                      ToolTip="设置" Margin="4,0,0,0"
+                      AutomationProperties.Name="设置" AutomationProperties.AutomationId="SettingsButton"/>
+              <Border Width="1" Height="14" Background="{DynamicResource TrackBgBrush}" Margin="6,0" VerticalAlignment="Center"/>
+              <Button x:Name="MinButton" Style="{StaticResource IconButtonStyle}" Content="&#xE921;"
+                      ToolTip="最小化" AutomationProperties.Name="最小化" AutomationProperties.AutomationId="MinButton"/>
+              <Button x:Name="CloseButton" Style="{StaticResource CloseButtonStyle}" Content="&#xE8BB;"
+                      ToolTip="关闭" Margin="4,0,0,0"
+                      AutomationProperties.Name="关闭" AutomationProperties.AutomationId="CloseButton"/>
+            </StackPanel>
+          </Grid>
+
+          <!-- ============ 工具栏：视图切换 / 组织管理 / 搜索 ============ -->
+          <Grid x:Name="ToolbarGrid" Grid.Row="1" Margin="22,8,18,0" Height="30">
+            <StackPanel Orientation="Horizontal">
+              <ToggleButton x:Name="TabTasks" Style="{StaticResource TabStyle}" Content="待办" IsChecked="True"
+                            AutomationProperties.Name="待办视图" AutomationProperties.AutomationId="TabTasks"/>
+              <ToggleButton x:Name="TabHistory" Style="{StaticResource TabStyle}" Content="历史" Margin="6,0,0,0"
+                            AutomationProperties.Name="历史视图" AutomationProperties.AutomationId="TabHistory"/>
+              <ToggleButton x:Name="TabTrash" Style="{StaticResource TabStyle}" Content="回收站" Margin="6,0,0,0"
+                            AutomationProperties.Name="回收站视图" AutomationProperties.AutomationId="TabTrash"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+              <Button x:Name="TagsButton" Style="{StaticResource IconButtonStyle}" Content="&#xE8EC;"
+                      ToolTip="组织管理（标签）" AutomationProperties.Name="组织管理" AutomationProperties.AutomationId="TagsButton"/>
+              <Button x:Name="SearchButton" Style="{StaticResource IconButtonStyle}" Content="&#xE721;"
+                      ToolTip="搜索（Ctrl+F）" Margin="4,0,0,0"
+                      AutomationProperties.Name="搜索" AutomationProperties.AutomationId="SearchButton"/>
+            </StackPanel>
+          </Grid>
+
+          <!-- ============ 搜索栏 ============ -->
+          <Border x:Name="SearchBar" Grid.Row="2" Margin="22,6,18,0" Height="34" CornerRadius="10"
+                  Background="{DynamicResource ComposerBgBrush}" BorderBrush="{DynamicResource ComposerBorderBrush}"
+                  BorderThickness="1" Visibility="Collapsed">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+              <Grid Margin="11,0,6,0">
+                <TextBlock x:Name="SearchPlaceholder" Text="搜索便签或历史…" FontSize="12"
+                           Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                <TextBox x:Name="SearchInput" Style="{StaticResource SearchInputStyle}" VerticalAlignment="Center"
+                         AutomationProperties.Name="搜索输入框" AutomationProperties.AutomationId="SearchInput"/>
+              </Grid>
+              <Button x:Name="TagFilterButton" Grid.Column="1" Style="{StaticResource SmallButtonStyle}" Content="全部标签 ▾"
+                      Height="24" Padding="8,0" Margin="0,0,4,0" VerticalAlignment="Center" ToolTip="按标签筛选"
+                      AutomationProperties.Name="按标签筛选" AutomationProperties.AutomationId="TagFilterButton"/>
+              <Button x:Name="SearchClearButton" Grid.Column="2" Style="{StaticResource IconButtonStyle}"
+                      Content="&#xE711;" Width="24" Height="24" Margin="0,0,4,0" ToolTip="清除搜索"
+                      AutomationProperties.Name="清除搜索" AutomationProperties.AutomationId="SearchClearButton"/>
+            </Grid>
+          </Border>
+
+          <!-- ============ 列表 / 历史 ============ -->
+          <ScrollViewer x:Name="TasksScroller" Grid.Row="3" Margin="22,8,14,0" Focusable="False" AutomationProperties.AutomationId="TasksScroller"
+                        VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" PanningMode="VerticalOnly">
+            <StackPanel x:Name="TasksHost"/>
+          </ScrollViewer>
+
+          <ScrollViewer x:Name="HistoryScroller" Grid.Row="3" Margin="22,8,14,0" Focusable="False" AutomationProperties.AutomationId="HistoryScroller"
+                        VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                        PanningMode="VerticalOnly" Visibility="Collapsed">
+            <StackPanel x:Name="HistoryHost"/>
+          </ScrollViewer>
+
+          <ScrollViewer x:Name="TrashScroller" Grid.Row="3" Margin="22,8,14,0" Focusable="False" AutomationProperties.AutomationId="TrashScroller"
+                        VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                        PanningMode="VerticalOnly" Visibility="Collapsed">
+            <StackPanel x:Name="TrashHost"/>
+          </ScrollViewer>
+
+          <Grid x:Name="EmptyState" Grid.Row="3" Margin="24,0,24,0" Visibility="Collapsed" IsHitTestVisible="False">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+              <Border Width="62" Height="62" CornerRadius="31" Background="{DynamicResource PillBgBrush}"
+                      BorderBrush="{DynamicResource PillBorderBrush}" BorderThickness="1" HorizontalAlignment="Center">
+                <Image x:Name="EmptyIcon" Width="38" Height="38" HorizontalAlignment="Center" VerticalAlignment="Center"
+                       RenderOptions.BitmapScalingMode="HighQuality"/>
+              </Border>
+              <TextBlock x:Name="EmptyTitle" Text="还没有便签" Foreground="{DynamicResource TextPrimaryBrush}" FontSize="15"
+                         FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,14,0,0"/>
+              <TextBlock x:Name="EmptySubtitle" Text="在下方输入一条，按 Enter 保存" Foreground="{DynamicResource TextMutedBrush}"
+                         FontSize="11.5" HorizontalAlignment="Center" Margin="0,6,0,0"/>
+            </StackPanel>
+          </Grid>
+
+          <!-- ============ 输入区 ============ -->
+          <Grid x:Name="ComposerGrid" Grid.Row="4" Margin="22,8,22,16">
+            <Border x:Name="ComposerBorder" MinHeight="52" MaxHeight="140" VerticalAlignment="Bottom"
+                    Background="{DynamicResource ComposerBgBrush}"
+                    BorderBrush="{DynamicResource ComposerBorderBrush}" BorderThickness="1" CornerRadius="14" Padding="12,10,5,10">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="Auto"/>
+                  <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" Margin="0,0,6,0">
+                  <TextBlock x:Name="Placeholder" Text="添加一条便签，Enter 保存，Shift + Enter 换行…" FontSize="12.5"
+                             Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" IsHitTestVisible="False" TextWrapping="Wrap"/>
+                  <TextBox x:Name="NoteInput" Style="{StaticResource ComposerInputStyle}" VerticalAlignment="Center"
+                           AutomationProperties.Name="新便签输入框" AutomationProperties.AutomationId="NoteInput"/>
+                </Grid>
+                <Button x:Name="RepeatButton" Grid.Column="1" Style="{StaticResource TypeButtonStyle}"
+                        Content="单次 ▾" Margin="0,0,6,0" ToolTip="选择任务类型"
+                        AutomationProperties.Name="任务类型" AutomationProperties.AutomationId="RepeatButton"/>
+                <Button x:Name="AddButton" Grid.Column="2" Style="{StaticResource AddButtonStyle}" Content="&#xE710;"
+                        VerticalAlignment="Center" ToolTip="添加便签"
+                        AutomationProperties.Name="添加便签" AutomationProperties.AutomationId="AddButton"/>
+              </Grid>
+            </Border>
+          </Grid>
+        </Grid>
+
+        <!-- ============ 拖动跟手浮层（ghost 跟随光标） ============ -->
+        <Canvas x:Name="DragLayer" Panel.ZIndex="44" IsHitTestVisible="False"/>
+
+        <!-- ============ 悬浮提示 ============ -->
+        <Border x:Name="Toast" Panel.ZIndex="40" Visibility="Collapsed" HorizontalAlignment="Center"
+                VerticalAlignment="Bottom" Margin="20,0,20,82" Background="{DynamicResource SettingsBgBrush}"
+                BorderBrush="{DynamicResource AccentDeepBrush}" BorderThickness="1" CornerRadius="10" Padding="12,7"
+                IsHitTestVisible="False">
+          <TextBlock x:Name="ToastText" Text="" FontSize="11" Foreground="{DynamicResource TextPrimaryBrush}" TextWrapping="Wrap"/>
+        </Border>
+
+        <!-- ============ 专注模式：番茄钟 ============ -->
+        <Border x:Name="PomodoroPanel" Panel.ZIndex="46" Visibility="Collapsed"
+                HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,30,0,0"
+                Background="{DynamicResource PillBgBrush}" BorderBrush="{DynamicResource PillBorderBrush}"
+                BorderThickness="1" CornerRadius="18" Padding="18,8" Cursor="Hand"
+                ToolTip="左键开始 / 暂停，右键切换时长"
+                AutomationProperties.Name="番茄钟" AutomationProperties.AutomationId="PomodoroPanel">
+          <StackPanel Orientation="Horizontal">
+            <Ellipse x:Name="PomodoroDot" Width="10" Height="10" Fill="{DynamicResource TextMutedBrush}"
+                     VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <TextBlock x:Name="PomodoroText" Text="25:00" FontFamily="Segoe UI Light" FontSize="40"
+                       Foreground="{DynamicResource TextPrimaryBrush}" Typography.NumeralAlignment="Tabular"
+                       AutomationProperties.AutomationId="PomodoroText"/>
+          </StackPanel>
+        </Border>
+
+        <!-- ============ 专注模式：置顶 / 锁定 / 退出 ============ -->
+        <StackPanel x:Name="FocusActions" Panel.ZIndex="46" Orientation="Horizontal"
+                    HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,4,8,0"
+                    Visibility="Collapsed" Background="Transparent">
+          <ToggleButton x:Name="FocusPinToggle" Style="{StaticResource ChromeToggleStyle}" Content="&#xE718;"
+                        ToolTip="窗口置顶" Margin="0,0,2,0"
+                        AutomationProperties.Name="窗口置顶" AutomationProperties.AutomationId="FocusPinToggle"/>
+          <ToggleButton x:Name="FocusLockToggle" Style="{StaticResource ChromeToggleStyle}" Content="&#xE72E;"
+                        ToolTip="锁定页面（禁止拖动与编辑）" Margin="0,0,2,0"
+                        AutomationProperties.Name="页面锁定" AutomationProperties.AutomationId="FocusLockToggle"/>
+          <Button x:Name="FocusExitButton" Style="{StaticResource IconButtonStyle}" Content="&#xE73F;"
+                  VerticalAlignment="Center" ToolTip="退出专注模式（Esc）"
+                  AutomationProperties.Name="退出专注模式" AutomationProperties.AutomationId="FocusExitButton"/>
+        </StackPanel>
+
+        <!-- ============ 右下角缩放手柄（完整模式与专注模式通用） ============ -->
+        <Border x:Name="ResizeGrip" Panel.ZIndex="47" Width="46" Height="18"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                Background="Transparent" Cursor="SizeNWSE" ToolTip="拖动调整窗口大小"
+                AutomationProperties.Name="调整窗口大小" AutomationProperties.AutomationId="ResizeGrip">
+          <Path Stroke="{DynamicResource TextMutedBrush}" StrokeThickness="1.1" Stretch="None" Opacity="0.55"
+                Width="16" Height="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,5,3"
+                Data="M 4,13 L 13,4 M 8,13 L 13,8 M 0,13 L 13,0"/>
+        </Border>
+
+        <!-- ============ 到点提醒浮层 ============ -->
+        <Border x:Name="RemindOverlay" Panel.ZIndex="48" Visibility="Collapsed" VerticalAlignment="Top"
+                Margin="16,78,16,0" Background="{DynamicResource SettingsBgBrush}"
+                BorderBrush="{DynamicResource AccentDeepBrush}" BorderThickness="1" CornerRadius="14" Padding="14,12,14,10">
+          <Border.Effect>
+            <DropShadowEffect BlurRadius="18" ShadowDepth="6" Direction="270" Opacity="0.5" Color="#FF000000"/>
+          </Border.Effect>
+          <StackPanel>
+            <Grid Margin="0,0,0,8">
+              <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="&#xE7ED;" FontFamily="Segoe MDL2 Assets" FontSize="12"
+                           Foreground="{DynamicResource AccentTextBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                <TextBlock x:Name="RemindTitle" Text="到点提醒" FontSize="12" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+              </StackPanel>
+              <Button x:Name="RemindCloseButton" Style="{StaticResource IconButtonStyle}" Content="&#xE711;"
+                      Width="22" Height="22" HorizontalAlignment="Right" ToolTip="收起提醒"
+                      AutomationProperties.Name="收起提醒" AutomationProperties.AutomationId="RemindCloseButton"/>
+            </Grid>
+            <ScrollViewer x:Name="RemindScroller" MaxHeight="240" VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled">
+              <StackPanel x:Name="RemindHost"/>
+            </ScrollViewer>
+          </StackPanel>
+        </Border>
+
+        <!-- ============ 提醒时间编辑 ============ -->
+        <Grid x:Name="RemindEditor" Panel.ZIndex="49" Visibility="Collapsed" Background="#66000000">
+          <Border Width="300" VerticalAlignment="Center" HorizontalAlignment="Center" CornerRadius="14"
+                  Background="{DynamicResource SettingsBgBrush}" BorderBrush="{DynamicResource CardBorderBrush}"
+                  BorderThickness="1" Padding="16,14">
+            <StackPanel>
+              <TextBlock Text="设置提醒时间" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+              <TextBlock x:Name="RemindEditorText" Text="" FontSize="10.5" Foreground="{DynamicResource TextMutedBrush}"
+                         Margin="0,4,0,8" TextWrapping="Wrap"/>
+              <Border Background="{DynamicResource ComposerBgBrush}" BorderBrush="{DynamicResource ComposerBorderBrush}"
+                      BorderThickness="1" CornerRadius="8" Padding="10,5">
+                <TextBox x:Name="RemindInput" Background="Transparent" BorderThickness="0" FontSize="12.5"
+                         Foreground="{DynamicResource TextPrimaryBrush}" CaretBrush="{DynamicResource AccentBrush}"
+                         AutomationProperties.Name="提醒时间输入" AutomationProperties.AutomationId="RemindInput"/>
+              </Border>
+              <TextBlock x:Name="RemindHint" Text="格式：2026-10-31 09:00，也可以只写 10-31 09:00"
+                         FontSize="9.5" Foreground="{DynamicResource TextMutedBrush}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+                <Button x:Name="RemindOkButton" Style="{StaticResource SmallButtonStyle}" Content="确定" Margin="0,0,6,0"
+                        AutomationProperties.Name="确定提醒时间" AutomationProperties.AutomationId="RemindOkButton"/>
+                <Button x:Name="RemindCancelButton" Style="{StaticResource SmallButtonStyle}" Content="取消"
+                        AutomationProperties.Name="取消提醒设置" AutomationProperties.AutomationId="RemindCancelButton"/>
+              </StackPanel>
+            </StackPanel>
+          </Border>
+        </Grid>
+
+        <!-- ============ 番茄钟自定义时长编辑 ============ -->
+        <Grid x:Name="PomodoroEditor" Panel.ZIndex="49" Visibility="Collapsed" Background="#66000000">
+          <Border Width="280" VerticalAlignment="Center" HorizontalAlignment="Center" CornerRadius="14"
+                  Background="{DynamicResource SettingsBgBrush}" BorderBrush="{DynamicResource CardBorderBrush}"
+                  BorderThickness="1" Padding="16,14">
+            <StackPanel>
+              <TextBlock Text="自定义番茄钟时长" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+              <TextBlock x:Name="PomodoroEditorHint" Text="输入分钟数，如 30" FontSize="10.5" Foreground="{DynamicResource TextMutedBrush}"
+                         Margin="0,4,0,8" TextWrapping="Wrap"/>
+              <Border Background="{DynamicResource ComposerBgBrush}" BorderBrush="{DynamicResource ComposerBorderBrush}"
+                      BorderThickness="1" CornerRadius="8" Padding="10,5">
+                <TextBox x:Name="PomodoroInput" Background="Transparent" BorderThickness="0" FontSize="12.5"
+                         Foreground="{DynamicResource TextPrimaryBrush}" CaretBrush="{DynamicResource AccentBrush}"
+                         AutomationProperties.Name="番茄钟时长输入" AutomationProperties.AutomationId="PomodoroInput"/>
+              </Border>
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+                <Button x:Name="PomodoroOkButton" Style="{StaticResource SmallButtonStyle}" Content="确定" Margin="0,0,6,0"
+                        AutomationProperties.Name="确定番茄钟时长" AutomationProperties.AutomationId="PomodoroOkButton"/>
+                <Button x:Name="PomodoroCancelButton" Style="{StaticResource SmallButtonStyle}" Content="取消"
+                        AutomationProperties.Name="取消番茄钟时长" AutomationProperties.AutomationId="PomodoroCancelButton"/>
+              </StackPanel>
+            </StackPanel>
+          </Border>
+        </Grid>
+
+        <!-- ============ 设置面板 ============ -->
+        <Grid x:Name="SettingsOverlay" Panel.ZIndex="50" Visibility="Collapsed" Background="#77000000">
+          <Border x:Name="SettingsPanel" Width="340" HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                  Margin="18,26,18,26" CornerRadius="18" Background="{DynamicResource SettingsBgBrush}"
+                  BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1">
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+              </Grid.RowDefinitions>
+              <Grid Margin="20,14,12,4">
+                <StackPanel>
+                  <TextBlock Text="设置" FontSize="17" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                  <TextBlock x:Name="VersionText" Text="核桃便签" FontSize="10" Foreground="{DynamicResource TextMutedBrush}" Margin="0,3,0,0"/>
+                </StackPanel>
+                <Button x:Name="SettingsCloseButton" Style="{StaticResource IconButtonStyle}" Content="&#xE711;"
+                        HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="关闭设置"
+                        AutomationProperties.Name="关闭设置" AutomationProperties.AutomationId="SettingsCloseButton"/>
+              </Grid>
+              <ScrollViewer x:Name="SettingsScroller" Grid.Row="1" Margin="20,0,10,14" VerticalScrollBarVisibility="Auto" AutomationProperties.AutomationId="SettingsScroller"
+                            HorizontalScrollBarVisibility="Disabled">
+                <StackPanel>
+                  <TextBlock Text="外观" Style="{StaticResource SettingsSectionStyle}" Margin="0,4,0,8"/>
+
+                  <TextBlock Text="语言" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                  <WrapPanel x:Name="LangPanel" Margin="0,8,0,0"/>
+
+                  <TextBlock Text="主题" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,14,0,0"/>
+                  <UniformGrid x:Name="ThemeGrid" Columns="3" Margin="0,8,0,0"/>
+
+                  <Grid Margin="0,14,0,0">
+                    <TextBlock Text="玻璃效果" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                    <ToggleButton x:Name="SettingsGlassToggle" Style="{StaticResource SwitchStyle}"
+                                  HorizontalAlignment="Right" AutomationProperties.Name="玻璃效果"
+                                  AutomationProperties.AutomationId="SettingsGlassToggle"/>
+                  </Grid>
+
+                  <Grid Margin="0,12,0,4">
+                    <TextBlock Text="背景透明度" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="OpacityValueText" Text="86%" FontSize="11.5" Foreground="{DynamicResource AccentTextBrush}"
+                               HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                  </Grid>
+                  <Slider x:Name="OpacitySlider" Style="{StaticResource SliderStyle}" Minimum="40" Maximum="100" Value="86"
+                          IsMoveToPointEnabled="True" LargeChange="5" SmallChange="1"
+                          AutomationProperties.Name="背景透明度" AutomationProperties.AutomationId="OpacitySlider"/>
+                  <WrapPanel Margin="0,8,0,0">
+                    <Button x:Name="PresetClear" Style="{StaticResource SmallButtonStyle}" Content="清透 55%" Margin="0,0,6,6"/>
+                    <Button x:Name="PresetStandard" Style="{StaticResource SmallButtonStyle}" Content="标准 86%" Margin="0,0,6,6"/>
+                    <Button x:Name="PresetDeep" Style="{StaticResource SmallButtonStyle}" Content="沉稳 92%" Margin="0,0,6,6"/>
+                  </WrapPanel>
+
+                  <TextBlock Text="时钟" Style="{StaticResource SettingsSectionStyle}"/>
+                  <Grid Margin="0,2,0,8">
+                    <TextBlock Text="24 小时制" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                    <ToggleButton x:Name="Clock24Toggle" Style="{StaticResource SwitchStyle}" HorizontalAlignment="Right"
+                                  AutomationProperties.Name="24 小时制" AutomationProperties.AutomationId="Clock24Toggle"/>
+                  </Grid>
+                  <Grid Margin="0,2,0,8">
+                    <TextBlock Text="显示秒" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                    <ToggleButton x:Name="ClockSecondsToggle" Style="{StaticResource SwitchStyle}" HorizontalAlignment="Right"
+                                  AutomationProperties.Name="显示秒" AutomationProperties.AutomationId="ClockSecondsToggle"/>
+                  </Grid>
+                  <Grid Margin="0,2,0,4">
+                    <StackPanel>
+                      <TextBlock Text="本周日历" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                      <TextBlock Text="主页时间下方显示周一到周日，今天高亮" FontSize="9.5" Foreground="{DynamicResource TextMutedBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                    <ToggleButton x:Name="ClockCalendarToggle" Style="{StaticResource SwitchStyle}" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                  AutomationProperties.Name="本周日历" AutomationProperties.AutomationId="ClockCalendarToggle"/>
+                  </Grid>
+
+                  <TextBlock Text="提醒" Style="{StaticResource SettingsSectionStyle}"/>
+                  <Grid Margin="0,2,0,8">
+                    <TextBlock Text="提示音" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                    <ToggleButton x:Name="RemindSoundToggle" Style="{StaticResource SwitchStyle}" HorizontalAlignment="Right"
+                                  AutomationProperties.Name="提醒提示音" AutomationProperties.AutomationId="RemindSoundToggle"/>
+                  </Grid>
+                  <Grid Margin="0,2,0,4">
+                    <StackPanel>
+                      <TextBlock Text="完成音效" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                      <TextBlock Text="勾掉一条便签时轻响一声" FontSize="9.5" Foreground="{DynamicResource TextMutedBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                    <ToggleButton x:Name="DoneSoundToggle" Style="{StaticResource SwitchStyle}" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                  AutomationProperties.Name="完成音效" AutomationProperties.AutomationId="DoneSoundToggle"/>
+                  </Grid>
+                  <Grid Margin="0,2,0,8">
+                    <StackPanel>
+                      <TextBlock Text="番茄钟" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                      <TextBlock Text="专注模式下显示倒计时" FontSize="9.5" Foreground="{DynamicResource TextMutedBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                    <ToggleButton x:Name="PomodoroToggle" Style="{StaticResource SwitchStyle}" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                  AutomationProperties.Name="番茄钟" AutomationProperties.AutomationId="PomodoroToggle"/>
+                  </Grid>
+                  <TextBlock x:Name="RemindLeadText" Text="提前提醒：准时" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                  <WrapPanel Margin="0,8,0,0">
+                    <Button x:Name="RemindLead0" Style="{StaticResource SmallButtonStyle}" Content="准时" Margin="0,0,6,6"
+                            AutomationProperties.Name="准时提醒" AutomationProperties.AutomationId="RemindLead0"/>
+                    <Button x:Name="RemindLead5" Style="{StaticResource SmallButtonStyle}" Content="提前 5 分" Margin="0,0,6,6"
+                            AutomationProperties.Name="提前 5 分提醒" AutomationProperties.AutomationId="RemindLead5"/>
+                    <Button x:Name="RemindLead15" Style="{StaticResource SmallButtonStyle}" Content="提前 15 分" Margin="0,0,6,6"
+                            AutomationProperties.Name="提前 15 分提醒" AutomationProperties.AutomationId="RemindLead15"/>
+                    <Button x:Name="RemindLead30" Style="{StaticResource SmallButtonStyle}" Content="提前 30 分" Margin="0,0,6,6"
+                            AutomationProperties.Name="提前 30 分提醒" AutomationProperties.AutomationId="RemindLead30"/>
+                  </WrapPanel>
+                  <TextBlock x:Name="RemindExpireText" Text="关机错过的提醒：24 小时内补弹" FontSize="11.5"
+                             Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,10,0,0"/>
+                  <WrapPanel Margin="0,8,0,0">
+                    <Button x:Name="RemindExpire24" Style="{StaticResource SmallButtonStyle}" Content="24 小时" Margin="0,0,6,6"
+                            AutomationProperties.Name="错过 24 小时内补弹" AutomationProperties.AutomationId="RemindExpire24"/>
+                    <Button x:Name="RemindExpire72" Style="{StaticResource SmallButtonStyle}" Content="3 天" Margin="0,0,6,6"
+                            AutomationProperties.Name="错过 3 天内补弹" AutomationProperties.AutomationId="RemindExpire72"/>
+                    <Button x:Name="RemindExpire168" Style="{StaticResource SmallButtonStyle}" Content="7 天" Margin="0,0,6,6"
+                            AutomationProperties.Name="错过 7 天内补弹" AutomationProperties.AutomationId="RemindExpire168"/>
+                    <Button x:Name="RemindExpire0" Style="{StaticResource SmallButtonStyle}" Content="永久" Margin="0,0,6,6"
+                            AutomationProperties.Name="错过的提醒全部补弹" AutomationProperties.AutomationId="RemindExpire0"/>
+                  </WrapPanel>
+                  <Border x:Name="MissedBanner" Visibility="Collapsed" Margin="0,4,0,2" CornerRadius="10" Padding="10,7,8,7"
+                          Background="{DynamicResource PillBgBrush}" BorderBrush="{DynamicResource CardBorderBrush}"
+                          BorderThickness="1" AutomationProperties.Name="已错过的提醒"
+                          AutomationProperties.AutomationId="MissedBanner">
+                    <Grid>
+                      <TextBlock x:Name="MissedText" Text="有 0 条提醒已错过" FontSize="10" VerticalAlignment="Center"
+                                 Foreground="{DynamicResource TextSecondaryBrush}" TextWrapping="Wrap" Margin="0,0,62,0"/>
+                      <Button x:Name="MissedViewButton" Style="{StaticResource SmallButtonStyle}" Content="查看"
+                              HorizontalAlignment="Right" VerticalAlignment="Center" Padding="9,2,9,2"
+                              AutomationProperties.Name="查看已错过的提醒" AutomationProperties.AutomationId="MissedViewButton"/>
+                    </Grid>
+                  </Border>
+                  <TextBlock Text="在便签右侧点小铃铛可以为单条便签设置提醒时间。" FontSize="9.5" Foreground="{DynamicResource TextMutedBrush}"
+                             Margin="0,8,0,0" TextWrapping="Wrap"/>
+
+                  <TextBlock Text="任务与历史" Style="{StaticResource SettingsSectionStyle}"/>
+                  <TextBlock Text="单次任务未完成会自动顺延；完成后次日归档到历史。循环任务按周期自动出现，未完成也会在新周期再新增一条。"
+                             FontSize="10.5" Foreground="{DynamicResource TextMutedBrush}" TextWrapping="Wrap" LineHeight="16"/>
+                  <WrapPanel Margin="0,12,0,0">
+                    <Button x:Name="ExportMdButton" Style="{StaticResource SmallButtonStyle}" Content="导出 Markdown" Margin="0,0,6,6"
+                            AutomationProperties.Name="导出 Markdown" AutomationProperties.AutomationId="ExportMdButton"/>
+                    <Button x:Name="ExportCsvButton" Style="{StaticResource SmallButtonStyle}" Content="导出 CSV" Margin="0,0,6,6"
+                            AutomationProperties.Name="导出 CSV" AutomationProperties.AutomationId="ExportCsvButton"/>
+                    <Button x:Name="ClearHistoryButton" Style="{StaticResource DangerButtonStyle}" Content="清空历史" Margin="0,0,6,6"
+                            AutomationProperties.Name="清空历史" AutomationProperties.AutomationId="ClearHistoryButton"/>
+                  </WrapPanel>
+
+                  <TextBlock Text="桌面集成" Style="{StaticResource SettingsSectionStyle}"/>
+                  <Grid Margin="0,2,0,8">
+                    <TextBlock Text="系统托盘图标" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                    <ToggleButton x:Name="TrayToggle" Style="{StaticResource SwitchStyle}" HorizontalAlignment="Right"
+                                  AutomationProperties.Name="系统托盘图标" AutomationProperties.AutomationId="TrayToggle"/>
+                  </Grid>
+                  <Grid Margin="0,2,0,8">
+                    <TextBlock Text="关闭时隐藏到托盘" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                    <ToggleButton x:Name="CloseToTrayToggle" Style="{StaticResource SwitchStyle}" HorizontalAlignment="Right"
+                                  AutomationProperties.Name="关闭时隐藏到托盘" AutomationProperties.AutomationId="CloseToTrayToggle"/>
+                  </Grid>
+                  <Grid Margin="0,2,0,8">
+                    <StackPanel>
+                      <TextBlock Text="全局快捷键" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                      <TextBlock Text="Ctrl + Alt + N 显示 / 隐藏窗口" FontSize="9.5" Foreground="{DynamicResource TextMutedBrush}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                    <ToggleButton x:Name="HotkeyToggle" Style="{StaticResource SwitchStyle}" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                  AutomationProperties.Name="全局快捷键" AutomationProperties.AutomationId="HotkeyToggle"/>
+                  </Grid>
+                  <Grid Margin="0,2,0,4">
+                    <TextBlock Text="开机自启" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                    <ToggleButton x:Name="AutostartToggle" Style="{StaticResource SwitchStyle}" HorizontalAlignment="Right"
+                                  AutomationProperties.Name="开机自启" AutomationProperties.AutomationId="AutostartToggle"/>
+                  </Grid>
+
+                  <TextBlock Text="数据" Style="{StaticResource SettingsSectionStyle}"/>
+                  <WrapPanel>
+                    <Button x:Name="BackupButton" Style="{StaticResource SmallButtonStyle}" Content="备份全部数据" Margin="0,0,6,6"
+                            AutomationProperties.Name="备份全部数据" AutomationProperties.AutomationId="BackupButton"/>
+                    <Button x:Name="RestoreLatestButton" Style="{StaticResource SmallButtonStyle}" Content="恢复最近备份" Margin="0,0,6,6"
+                            AutomationProperties.Name="恢复最近备份" AutomationProperties.AutomationId="RestoreLatestButton"/>
+                    <Button x:Name="RestoreFileButton" Style="{StaticResource SmallButtonStyle}" Content="从文件恢复…" Margin="0,0,6,6"/>
+                    <Button x:Name="OpenDataFolderButton" Style="{StaticResource SmallButtonStyle}" Content="打开数据文件夹" Margin="0,0,6,6"/>
+                  </WrapPanel>
+                  <TextBlock x:Name="SettingsStatus" Text="" FontSize="10.5" Foreground="{DynamicResource AccentTextBrush}"
+                             TextWrapping="Wrap" Margin="0,6,0,4"/>
+                  <TextBlock Text="所有数据都保存在本地，不联网。数据文件：HetaoNotes\data\notes.json"
+                             FontSize="9.5" Foreground="{DynamicResource TextMutedBrush}" TextWrapping="Wrap" Margin="0,2,0,14"/>
+                </StackPanel>
+              </ScrollViewer>
+            </Grid>
+          </Border>
+        </Grid>
+
+        <!-- ============ 组织管理（标签） ============ -->
+        <Grid x:Name="TagOverlay" Panel.ZIndex="51" Visibility="Collapsed" Background="#77000000">
+          <Border x:Name="TagPanel" Width="340" HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                  Margin="18,26,18,26" CornerRadius="18" Background="{DynamicResource SettingsBgBrush}"
+                  BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1">
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+              <Grid Margin="20,14,12,4">
+                <StackPanel>
+                  <TextBlock Text="组织管理" FontSize="17" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                  <TextBlock Text="新建标签，把条目归档到标签，可按标签筛选" FontSize="10"
+                             Foreground="{DynamicResource TextMutedBrush}" Margin="0,3,0,0"/>
+                </StackPanel>
+                <Button x:Name="TagCloseButton" Style="{StaticResource IconButtonStyle}" Content="&#xE711;"
+                        HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="关闭组织管理"
+                        AutomationProperties.Name="关闭组织管理" AutomationProperties.AutomationId="TagCloseButton"/>
+              </Grid>
+              <Grid Grid.Row="1" Margin="20,8,20,10">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Border Height="30" CornerRadius="9" Background="{DynamicResource ComposerBgBrush}"
+                        BorderBrush="{DynamicResource ComposerBorderBrush}" BorderThickness="1" Padding="9,0">
+                  <Grid>
+                    <TextBlock x:Name="TagInputPlaceholder" Text="新标签名称…" FontSize="11.5"
+                               Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                    <TextBox x:Name="TagInput" Style="{StaticResource SearchInputStyle}" VerticalAlignment="Center"
+                             AutomationProperties.Name="新标签名称" AutomationProperties.AutomationId="TagInput"/>
+                  </Grid>
+                </Border>
+                <Button x:Name="TagAddButton" Grid.Column="1" Style="{StaticResource SmallButtonStyle}" Content="新建"
+                        Height="30" Margin="6,0,0,0" Padding="12,0"
+                        AutomationProperties.Name="新建标签" AutomationProperties.AutomationId="TagAddButton"/>
+              </Grid>
+              <ScrollViewer x:Name="TagScroller" Grid.Row="2" Margin="20,0,10,0" VerticalScrollBarVisibility="Auto"
+                            HorizontalScrollBarVisibility="Disabled">
+                <StackPanel x:Name="TagListHost"/>
+              </ScrollViewer>
+              <Grid Grid.Row="3" Margin="20,8,14,14">
+                <TextBlock x:Name="TagStatus" Text="" FontSize="10" Foreground="{DynamicResource AccentTextBrush}"
+                           VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="200" HorizontalAlignment="Left"/>
+                <Button x:Name="TagClearFilterButton" Style="{StaticResource SmallButtonStyle}" Content="清除筛选"
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                        AutomationProperties.Name="清除标签筛选" AutomationProperties.AutomationId="TagClearFilterButton"/>
+              </Grid>
+            </Grid>
+          </Border>
+        </Grid>
+      </Grid>
+    </Border>
+  </Grid>
+</Window>

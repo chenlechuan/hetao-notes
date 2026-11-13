@@ -1,0 +1,19 @@
+# ===== 运行时数据（首次运行自动生成，绝不能提交）=====
+# notes.json / notes.bak.json / draft.json / exports / error.log 都在这里
+data/
+
+# ===== 临时文件与本地备份 =====
+*.tmp
+*.log
+*_backup/
+_backup/
+dist/
+_shots/
+_tools/
+
+# ===== 编辑器 / 系统 =====
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store

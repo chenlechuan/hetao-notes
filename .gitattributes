@@ -1,0 +1,23 @@
+# 默认按文本处理并统一为 LF
+* text=auto eol=lf
+
+# 源码与文档
+*.ps1   text eol=lf
+*.xaml  text eol=lf
+*.xml   text eol=lf
+*.md    text eol=lf
+*.json  text eol=lf
+
+# 中文说明文件保持 Windows 换行，用记事本打开才不挤成一行
+*.txt   text eol=crlf
+
+# 批处理 / VBS 是 GBK + CRLF，任何换行转换都会让双击直接报错，必须原样保存
+*.bat   -text
+*.cmd   -text
+*.vbs   -text
+*.lnk   binary
+
+# 二进制资源
+*.png   binary
+*.ico   binary
+*.jpg   binary
