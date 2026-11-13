@@ -2,6 +2,12 @@
 
 一个轻巧、好看的绿色桌面便签 / 任务清单。纯 Windows 原生（PowerShell + WPF）实现，**免安装、无依赖、可离线使用**。
 
+## 下载
+
+**[hetao-notes-v1.01.zip](https://github.com/chenlechuan/hetao-notes/releases/download/v1.01/hetao-notes-v1.01.zip)** · Windows 10 / 11 · 405 KB · 免安装
+
+解压得到 `HetaoNotes` 文件夹，双击里面的 `Launch.vbs` 即可运行（若被安全软件 / 组策略拦截，改用 `Launch.bat`）。不需要安装任何东西，也不需要联网。全部历史版本见 [Releases](https://github.com/chenlechuan/hetao-notes/releases)。
+
 v0.5 新增：
 
 - **单次任务 + 定期循环任务**：单次任务未完成会自动顺延到次日；循环任务可选每天 / 每周 / 每月，到周期自动出现
