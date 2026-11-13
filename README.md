@@ -4,7 +4,7 @@
 
 ## 下载
 
-**[hetao-notes-v1.01.zip](https://github.com/chenlechuan/hetao-notes/releases/download/v1.01/hetao-notes-v1.01.zip)** · Windows 10 / 11 · 2.2 MB · 免安装
+**[hetao-notes-v1.01.zip](https://github.com/chenlechuan/hetao-notes/releases/download/v1.01/hetao-notes-v1.01.zip)** · Windows 10 / 11 · 829 KB · 免安装
 
 解压得到 `HetaoNotes` 文件夹，双击里面的 `Launch.vbs` 即可运行（若被安全软件 / 组策略拦截，改用 `Launch.bat`）。不需要安装任何东西，也不需要联网。全部历史版本见 [Releases](https://github.com/chenlechuan/hetao-notes/releases)。
 
@@ -12,12 +12,12 @@
 
 <table>
   <tr>
-    <td align="center"><img src="assets/shot-main.png" width="380" alt="主界面，青柠绿主题"><br><sub>主界面 · 青柠绿</sub></td>
-    <td align="center"><img src="assets/shot-light.png" width="380" alt="便签黄主题主界面"><br><sub>便签黄 · 更像纸上的便签</sub></td>
+    <td align="center"><img src="assets/shot-main.webp" width="380" alt="主界面，青柠绿主题"><br><sub>主界面 · 青柠绿</sub></td>
+    <td align="center"><img src="assets/shot-light.webp" width="380" alt="便签黄主题主界面"><br><sub>便签黄 · 更像纸上的便签</sub></td>
   </tr>
   <tr>
-    <td align="center"><img src="assets/shot-settings.png" width="380" alt="设置面板，含九套主题与语言切换"><br><sub>设置 · 9 套主题与中英切换</sub></td>
-    <td align="center"><img src="assets/shot-focus.png" width="195" alt="专注模式小窗"><br><sub>专注模式 · 收起只剩便签</sub></td>
+    <td align="center"><img src="assets/shot-settings.webp" width="380" alt="设置面板，含九套主题与语言切换"><br><sub>设置 · 9 套主题与中英切换</sub></td>
+    <td align="center"><img src="assets/shot-focus.webp" width="195" alt="专注模式小窗"><br><sub>专注模式 · 收起只剩便签</sub></td>
   </tr>
 </table>
 
